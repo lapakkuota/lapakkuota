@@ -3,142 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Isi Ulang Pulsa</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .widget {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-        }
-        .widget h2 {
-            margin: 0 0 20px;
-            text-align: center;
-            color: #333;
-        }
-        .widget form {
-            display: flex;
-            flex-direction: column;
-        }
-        .widget label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        .widget input, .widget select, .widget button {
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .widget button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .widget button:hover {
-            background-color: #45a049;
-        }
-        .result {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #f4f4f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .error {
-            color: red;
-        }
-    </style>
+    <title>Widget Pulsa</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="widget">
-        <h2>Isi Ulang Pulsa</h2>
-        <form id="pulsaForm">
-            <label for="phone">Nomor Telepon:</label>
-            <input type="text" id="phone" name="phone" placeholder="Masukkan nomor telepon" required>
-            
-            <label for="nominal">Nominal Pulsa:</label>
-            <select id="nominal" name="nominal" required>
-                <option value="ist5">10.000</option>
-                <option value="xld">20.000</option>
-                <option value="pulsa50">50.000</option>
-                <option value="pulsa100">100.000</option>
-            </select>
-            
-            <button type="submit">Isi Pulsa</button>
-        </form>
-        <div id="result" class="result"></div>
-    </div>
+    <h1>Isi Ulang Pulsa</h1>
+    <form id="pulsa-form">
+        <label for="phone">Nomor Telepon:</label>
+        <input type="text" id="phone" name="phone" required><br><br>
 
-    <script>
-        const form = document.getElementById('pulsaForm');
-        const resultDiv = document.getElementById('result');
+        <label for="nominal">Nominal Pulsa:</label>
+        <select id="nominal" name="nominal" required>
+            <option value="ist5">5000</option>
+            <option value="ist10">10000</option>
+            <option value="ist20">20000</option>
+            <option value="ist50">50000</option>
+        </select><br><br>
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            resultDiv.innerHTML = 'Memproses transaksi...';
+        <button type="submit">Isi Pulsa</button>
+    </form>
 
-            const phone = document.getElementById('phone').value;
-            const nominal = document.getElementById('nominal').value;
+    <div id="message"></div>
 
-            try {
-                const response = await fetch('/process-pulsa', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ phone, nominal }),
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Terjadi kesalahan');
-                }
-
-                const data = await response.json();
-                resultDiv.innerHTML = `<span>Transaksi berhasil! Pesan: ${data.message}</span>`;
-            } catch (error) {
-                console.error('Error:', error);
-                resultDiv.innerHTML = `<span class="error">Terjadi kesalahan: ${error.message}</span>`;
-            }
-        });
-        // Menambahkan logika untuk memanggil endpoint persiapan terlebih dahulu
-        async function persiapan() {
-            try {
-                const response = await fetch('/persiapan', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: 'your-username', api_key: 'your-api-key' })
-                });
-
-                const data = await response.json();
-                if (response.ok) {
-                    console.log('Persiapan berhasil:', data.message);
-                } else {
-                    console.error('Persiapan gagal:', data.message);
-                }
-            } catch (error) {
-                console.error('Error:', error.message);
-            }
-        }
-
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
